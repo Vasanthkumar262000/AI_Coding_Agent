@@ -1,195 +1,115 @@
-/*
- * TodoApp Styles with Root Variables and Responsive Design
- * Updated to include CSS custom properties for easy theming and spacing.
- */
-
-/* Root variables for colors, fonts and spacing */
+/* Root variables for colors, spacing and sizing */
 :root {
-  /* Colors */
-  --color-primary: #28a745;   /* Green for Add button */
-  --color-primary-dark: #218838;
-  --color-danger: #dc3545;    /* Red for Delete button */
-  --color-danger-dark: #c82333;
-  --color-focus: #007bff;     /* Blue for input focus */
-  --color-background: #f4f4f4;
-  --color-surface: #ffffff;
-  --color-text: #333333;
-  --color-header: #222222;
-
-  /* Fonts */
-  --font-primary: 'Arial', 'Helvetica', sans-serif;
-
-  /* Spacing */
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-  --spacing-xl: 2rem;
+    --color-bg: #f9f9f9;
+    --color-primary: #4a90e2;
+    --color-primary-dark: #357ab8;
+    --color-operator: #ff9500;
+    --color-clear: #e74c3c;
+    --color-equals: #27ae60;
+    --color-error: #e74c3c;
+    --color-text: #333333;
+    --spacing: 8px;
+    --border-radius: 4px;
 }
 
-/* Reset */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* Calculator container */
+#calculator {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: var(--spacing);
+    background: var(--color-bg);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
 
-/* Base body styling */
-body {
-  font-family: var(--font-primary);
-  background-color: var(--color-background);
-  line-height: 1.5;
-  color: var(--color-text);
-  /* Center the app vertically and horizontally */
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* start at top, margin will add spacing */
-  min-height: 100vh;
-}
-
-/* Todo App Container */
-#app {
-  max-width: 600px;
-  width: 100%;
-  margin: var(--spacing-xl) auto;
-  padding: var(--spacing-lg);
-  background: var(--color-surface);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-#app h1 {
-  text-align: center;
-  margin-bottom: var(--spacing-md);
-  font-size: 1.8rem;
-  color: var(--color-header);
-}
-
-/* Input Section */
-#new-todo-input {
-  width: 70%;
-  padding: var(--spacing-sm) var(--spacing-md);
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  outline: none;
-  transition: border-color 0.2s ease-in-out;
-}
-
-#new-todo-input:focus {
-  border-color: var(--color-focus);
-}
-
-#add-todo-btn {
-  width: 28%;
-  margin-left: 2%;
-  padding: 0.55rem;
-  font-size: 1rem;
-  background-color: var(--color-primary);
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
-
-#add-todo-btn:hover {
-  background-color: var(--color-primary-dark);
-}
-
-#add-todo-btn:focus {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
-}
-
-/* Todo List */
-#todo-list {
-  list-style: none;
-  margin-top: var(--spacing-lg);
-  padding: 0;
-}
-
-#todo-list li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--spacing-sm) var(--spacing-xs);
-  border-bottom: 1px solid #eee;
-}
-
-#todo-list li:last-child {
-  border-bottom: none;
-}
-
-.todo-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex: 1;
-}
-
-.todo-item input[type="checkbox"] {
-  margin-right: var(--spacing-sm);
-  width: 1rem;
-  height: 1rem;
-  cursor: pointer;
-}
-
-.todo-item span {
-  flex: 1;
-  font-size: 1rem;
-}
-
-.delete-btn {
-  background: transparent;
-  border: none;
-  color: var(--color-danger);
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 0 var(--spacing-xs);
-}
-
-.delete-btn:hover {
-  color: var(--color-danger-dark);
-}
-
-.completed {
-  text-decoration: line-through;
-  opacity: 0.6;
-}
-
-/* Responsive Design */
-@media (max-width: 600px) {
-  /* Stack input and button vertically */
-  #new-todo-input {
+/* Display */
+#display {
     width: 100%;
-    margin-bottom: var(--spacing-sm);
-  }
+    font-size: 2rem;
+    padding: var(--spacing);
+    text-align: right;
+    border: none;
+    background: var(--color-bg);
+    color: var(--color-text);
+    border-radius: var(--border-radius);
+    user-select: none; /* disable text selection */
+    box-sizing: border-box;
+    margin-bottom: var(--spacing);
+}
 
-  #add-todo-btn {
+/* Error state for the display */
+#display.error {
+    background: var(--color-error);
+    color: #fff;
+}
+
+/* Buttons grid */
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing);
+}
+
+/* Individual button */
+.btn {
     width: 100%;
-    margin-left: 0;
-  }
-
-  #app {
-    max-width: 100%;
-    margin: var(--spacing-sm) auto;
-    padding: var(--spacing-md);
-  }
-
-  #app h1 {
+    padding: var(--spacing);
     font-size: 1.5rem;
-  }
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background 0.2s ease;
+    box-sizing: border-box;
+}
 
-  #todo-list li {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+/* Specific button types */
+.btn.operator {
+    background: var(--color-operator);
+}
 
-  .delete-btn {
-    align-self: flex-end;
-    margin-top: var(--spacing-xs);
-    /* Increase tap target on mobile */
-    padding: var(--spacing-xs);
-  }
+.btn.clear {
+    background: var(--color-clear);
+}
+
+.btn.equals {
+    background: var(--color-equals);
+}
+
+/* Hover / focus states */
+.btn:hover,
+.btn:focus {
+    background: var(--color-primary-dark);
+    outline: none;
+}
+
+/* Preserve special colors on hover/focus */
+.btn.operator:hover,
+.btn.operator:focus {
+    background: #e67e22; /* slightly darker operator */
+}
+
+.btn.clear:hover,
+.btn.clear:focus {
+    background: #c0392b;
+}
+
+.btn.equals:hover,
+.btn.equals:focus {
+    background: #1e8449;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 600px) {
+    #calculator {
+        max-width: 100%;
+        margin: 1rem;
+    }
+
+    .btn {
+        font-size: 2rem;
+        padding: 12px;
+    }
 }

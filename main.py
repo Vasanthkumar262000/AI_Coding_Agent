@@ -11,7 +11,7 @@ def print_banner():
     """Print a welcome banner."""
     banner = """
     ╔═══════════════════════════════════════════════════╗
-    ║         🤖 AI Coding Agent - Ready!               ║
+    ║         🤖_AI Coding Agent - Ready!                ║
     ║     Transform ideas into code automatically       ║
     ╚═══════════════════════════════════════════════════╝
     """
@@ -57,7 +57,7 @@ Example prompts:
         if args.prompt:
             user_prompt = args.prompt
         else:
-            print("💬 Enter your project description:")
+            print("Enter your project description:")
             user_prompt = input("\n➤  ")
 
         if not user_prompt.strip():
