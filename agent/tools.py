@@ -49,6 +49,12 @@ def list_files(directory: str = ".") -> str:
     files = [str(f.relative_to(PROJECT_ROOT)) for f in p.glob("**/*") if f.is_file()]
     return "\n".join(files) if files else "No files found."
 
+# Alias for list_files (LLM sometimes calls it list_file without 's')
+@tool
+def list_file(directory: str = ".") -> str:
+    """Lists all files in the specified directory within the project root."""
+    return list_files.invoke({"directory": directory})
+
 @tool
 def run_cmd(cmd: str, cwd: str = None, timeout: int = 30) -> Tuple[int, str, str]:
     """Runs a shell command in the specified directory and returns the result."""

@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from langchain.globals import set_verbose, set_debug
+from langchain_core.globals import set_verbose, set_debug  # ONLY CHANGE: langchain.globals -> langchain_core.globals
 from langchain_groq.chat_models import ChatGroq
 from langgraph.constants import END
 from langgraph.graph import StateGraph
@@ -14,7 +14,12 @@ _ = load_dotenv()
 set_debug(True)
 set_verbose(True)
 
-llm = ChatGroq(model="openai/gpt-oss-120b")
+llm = ChatGroq(model="openai/gpt-oss-120b",
+                max_tokens=2048,
+                temperature = 0,
+               parallel_tool_calls=False  # Prevents complex JSON# More consistent output
+                )
+
 
 
 def planner_agent(state: dict) -> dict:
@@ -53,7 +58,7 @@ def coder_agent(state: dict) -> dict:
         return {"coder_state": coder_state, "status": "DONE"}
 
     current_task = steps[coder_state.current_step_idx]
-    existing_content = read_file.run(current_task.filepath)
+    existing_content = read_file.invoke({"path": current_task.filepath})  # CHANGED: .run() -> .invoke()
 
     system_prompt = coder_system_prompt()
     user_prompt = (
@@ -66,8 +71,7 @@ def coder_agent(state: dict) -> dict:
     coder_tools = [read_file, write_file, list_files, get_current_directory]
     react_agent = create_react_agent(llm, coder_tools)
 
-    react_agent.invoke({"messages": [{"role": "system", "content": system_prompt},
-                                     {"role": "user", "content": user_prompt}]})
+    react_agent.invoke({"messages": [{"role": "user", "content": f"{system_prompt}\n\n{user_prompt}"}]})  # CHANGED: Combined messages
 
     coder_state.current_step_idx += 1
     return {"coder_state": coder_state}
@@ -89,6 +93,7 @@ graph.add_conditional_edges(
 
 graph.set_entry_point("planner")
 agent = graph.compile()
+
 if __name__ == "__main__":
     result = agent.invoke({"user_prompt": "Build a colourful modern todo app in html css and js"},
                           {"recursion_limit": 100})

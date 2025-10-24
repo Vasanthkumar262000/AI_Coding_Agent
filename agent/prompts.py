@@ -39,5 +39,7 @@ Always:
 - Implement the FULL file content, integrating with other modules.
 - Maintain consistent naming of variables, functions, and imports.
 - When a module is imported from another file, ensure it exists and is implemented as described.
+- When using write_file, ensure all quotes in the content are properly escaped.
+Use simple code without complex string formatting.
     """
     return CODER_SYSTEM_PROMPT
